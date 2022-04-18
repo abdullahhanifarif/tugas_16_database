@@ -1,0 +1,93 @@
+TUGAS 16 DATABASE
+
+1. 	Buat database dengan nama matkul dan insert 5 buah data yang jika ditampilkan akan seperti gambar dibawah ini!
+
+	> db.matkul.find();
+	{ "_id" : ObjectId("625a8d1e8e0223b379262997"), "matkul" : "Algoritma & Pemrograman", "kode_matkul" : "1234567", "nama_dosen" : "Jamal Kosasih" }
+	{ "_id" : ObjectId("625a8d1e8e0223b379262998"), "matkul" : "Rekayasa Perangkat Lunak", "kode_matkul" : "1234568", "nama_dosen" : "Ivan Bagus" }
+	{ "_id" : ObjectId("625a8d1e8e0223b379262999"), "matkul" : "Sistem Basis Data", "kode_matkul" : "1234569", "nama_dosen" : "Anida Nur Afika" }
+	{ "_id" : ObjectId("625a8d1e8e0223b37926299a"), "matkul" : "Pengantar Ilmu Komputer", "kode_matkul" : "1234561", "nama_dosen" : "Nico Ariesto" }
+	{ "_id" : ObjectId("625a8d1e8e0223b37926299b"), "matkul" : "Bahasa Indonesia", "kode_matkul" : "1234562", "nama_dosen" : "Fifi Meilani" }
+	>
+
+2. 	Ubah nama_dosen menjadi Sekar Wandansari untuk kode_matkul = 1234562.
+
+3. 	Hapus data nama dosen a/n Jamal Kosasih dan Ivan Bagus dari tabel matkul!
+
+4. 	Hapus database matkul!
+
+
+
+
+
+Jawaban :
+
+1.	> use matkul
+	switched to db matkul
+	> db.matkul.insertMany([
+	... {matkul : "Algoritma & Pemrograman", kode_matkul : "1234567", nama_dosen : "Jamal Kosasih"},
+	... {matkul : "Rekayasa Perangkat Lunak", kode_matkul : "1234568", nama_dosen : "Ivan Bagus"},
+	... {matkul : "Sistem Basis Data", kode_matkul : "1234569", nama_dosen : "Anida Nur Afika"},
+	... {matkul : "Pengantar Ilmu Komputer", kode_matkul : "1234561", nama_dosen : "Nico Ariesto"},
+	... {matkul : "Bahasa Indonesia", kode_matkul : "1234562", nama_dosen : "Fifi Meilani"}
+	... ]);
+	{
+	        "acknowledged" : true,
+	        "insertedIds" : [
+	                ObjectId("625a8d1e8e0223b379262997"),
+	                ObjectId("625a8d1e8e0223b379262998"),
+	                ObjectId("625a8d1e8e0223b379262999"),
+	                ObjectId("625a8d1e8e0223b37926299a"),
+	                ObjectId("625a8d1e8e0223b37926299b")
+	        ]
+	}
+	> db.matkul.find();
+	{ "_id" : ObjectId("625a8d1e8e0223b379262997"), "matkul" : "Algoritma & Pemrograman", "kode_matkul" : "1234567", "nama_dosen" : "Jamal Kosasih" }
+	{ "_id" : ObjectId("625a8d1e8e0223b379262998"), "matkul" : "Rekayasa Perangkat Lunak", "kode_matkul" : "1234568", "nama_dosen" : "Ivan Bagus" }
+	{ "_id" : ObjectId("625a8d1e8e0223b379262999"), "matkul" : "Sistem Basis Data", "kode_matkul" : "1234569", "nama_dosen" : "Anida Nur Afika" }
+	{ "_id" : ObjectId("625a8d1e8e0223b37926299a"), "matkul" : "Pengantar Ilmu Komputer", "kode_matkul" : "1234561", "nama_dosen" : "Nico Ariesto" }
+	{ "_id" : ObjectId("625a8d1e8e0223b37926299b"), "matkul" : "Bahasa Indonesia", "kode_matkul" : "1234562", "nama_dosen" : "Fifi Meilani" }
+	>
+
+
+
+2.	> db.matkul.update(
+	... {kode_matkul : "1234562"},
+	... {$set:{nama_dosen : "Sekar Wandansari"}},
+	... false,true
+	... );
+	WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+	> db.matkul.find();
+	{ "_id" : ObjectId("625a8d1e8e0223b379262997"), "matkul" : "Algoritma & Pemrograman", "kode_matkul" : "1234567", "nama_dosen" : "Jamal Kosasih" }
+	{ "_id" : ObjectId("625a8d1e8e0223b379262998"), "matkul" : "Rekayasa Perangkat Lunak", "kode_matkul" : "1234568", "nama_dosen" : "Ivan Bagus" }
+	{ "_id" : ObjectId("625a8d1e8e0223b379262999"), "matkul" : "Sistem Basis Data", "kode_matkul" : "1234569", "nama_dosen" : "Anida Nur Afika" }
+	{ "_id" : ObjectId("625a8d1e8e0223b37926299a"), "matkul" : "Pengantar Ilmu Komputer", "kode_matkul" : "1234561", "nama_dosen" : "Nico Ariesto" }
+	{ "_id" : ObjectId("625a8d1e8e0223b37926299b"), "matkul" : "Bahasa Indonesia", "kode_matkul" : "1234562", "nama_dosen" : "Sekar Wandansari" }
+	>
+
+
+
+3.	> db.matkul.remove({
+	... $or: [
+	... {nama_dosen : "Jamal Kosasih"},
+	... {nama_dosen : "Ivan Bagus"}
+	... ]
+	... });
+	WriteResult({ "nRemoved" : 2 })
+	> db.matkul.find();
+	{ "_id" : ObjectId("625a8d1e8e0223b379262999"), "matkul" : "Sistem Basis Data", "kode_matkul" : "1234569", "nama_dosen" : "Anida Nur Afika" }
+	{ "_id" : ObjectId("625a8d1e8e0223b37926299a"), "matkul" : "Pengantar Ilmu Komputer", "kode_matkul" : "1234561", "nama_dosen" : "Nico Ariesto" }
+	{ "_id" : ObjectId("625a8d1e8e0223b37926299b"), "matkul" : "Bahasa Indonesia", "kode_matkul" : "1234562", "nama_dosen" : "Sekar Wandansari" }
+	>
+
+
+
+
+4.	> db.dropDatabase();
+	{ "ok" : 1 }
+	> db.matkul.find();
+	> db.matkul.count();
+	0
+	>
+
+
